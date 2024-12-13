@@ -18,6 +18,7 @@ services:
       - mysqldata:/var/lib/mysql
       - backup:/backup
     environment:
+      # Don't write comments on the same line as the variable
       CRON_SCHEDULE: "5 3 * * *"
       INCREMENTAL: "true"
       COMPRESS_THREADS: 1
@@ -26,6 +27,7 @@ services:
 
       FULL_BACKUP_DATE_FORMAT: "%a"
       FULL_BACKUP_DATE_RESULT: "Sun"
+      MAX_INC_BACKUPS_BEFORE_FULL: 7
 
       ROTATION1_DAYS: 6
       ROTATION1_DATE_FORMAT: "%a"

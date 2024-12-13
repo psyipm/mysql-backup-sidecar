@@ -1,6 +1,6 @@
 # mysql-backup-sidecar
 
-This backup docker container creates incremental and compressed MySQL or MariaDB backups without blocking the database during the backup procedure. It is based on `XtraBackup` https://www.percona.com/doc/percona-xtrabackup/2.4/index.html and the forked version for MariaDB `Mariabackup` https://mariadb.com/kb/en/mariabackup/. If you are not familiar with the underlying backup tools, please, read the documentation to understand what commands are executed on your DB server. 
+This backup docker container creates incremental and compressed MySQL or MariaDB backups without blocking the database during the backup procedure. It is based on `XtraBackup` https://www.percona.com/doc/percona-xtrabackup/2.4/index.html and the forked version for MariaDB `Mariabackup` https://mariadb.com/kb/en/mariabackup/. If you are not familiar with the underlying backup tools, please, read the documentation to understand what commands are executed on your DB server.
 
 ## Features
 
@@ -35,8 +35,9 @@ The following environment variables are supported (incl. example values) for con
 | `COMPRESS_THREADS`     | 1                           | Number of threads used for compression by XtraBackup/Mariabackup.                    |
 | `BACKUP_DIR`           | "/backup"                   | Directory where backup files will be stored.                                         |
 | `DIR_DATE_PATTERN`     | "%Y%m%d"                    | Date pattern (command `date` is used) to be used for naming backup directories.      |
-| `FULL_BACKUP_DATE_FORMAT` | "%a"                     | Date format (command `date` is used) to be used for naming full backup files.        |  
+| `FULL_BACKUP_DATE_FORMAT` | "%a"                     | Date format (command `date` is used) to be used for naming full backup files.        |
 | `FULL_BACKUP_DATE_RESULT` | "Sun"                    | If the `date` output of the pattern `FULL_BACKUP_DATE_FORMAT` is equals to `FULL_BACKUP_DATE_RESULT` a full backup will be created. |
+| `MAX_INC_BACKUPS_BEFORE_FULL` | "6"                    | If the number of incremental backups after the last full backup is greater than the value, a full backup will be taken |
 | `BEFORE_BACKUP_SCRIPT` | "/backup/before_script.sh"  | Path to the script that will be executed before starting the backup.                  |
 | `AFTER_BACKUP_SCRIPT`  | "/backup/after_script.sh"   | Path to the script that will be executed after completing the backup.                 |
 | `DATABASES_EXCLUDE`    | "db1 db2.table1"            | Databases or tables to be excluded from the backup, separated by space.               |

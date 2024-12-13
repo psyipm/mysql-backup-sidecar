@@ -7,6 +7,7 @@ dir_date_pattern=${DIR_DATE_PATTERN:-"%Y%m%d"}
 
 full_backup_date_format=${FULL_BACKUP_DATE_FORMAT:-"%a"}
 full_backup_date_result=${FULL_BACKUP_DATE_RESULT:-"Sun"}
+max_inc_backups_before_full=${MAX_INC_BACKUPS_BEFORE_FULL:-6}
 
 before_backup_script=${BEFORE_BACKUP_SCRIPT}
 after_backup_script=${AFTER_BACKUP_SCRIPT}

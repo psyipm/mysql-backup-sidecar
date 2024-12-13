@@ -18,7 +18,7 @@ ${xtrabackup} --version
 
 if [ "${incremental}" = true ]; then
     #check if a full backup has to be done again
-    if [ "$(date +${full_backup_date_format})" = "${full_backup_date_result}" ]; then
+    if [ "$(date +${full_backup_date_format})" = "${full_backup_date_result}" ] || [ "$(inc_backups | wc -l)" -gt $max_inc_backups_before_full ]; then
         echo "$(${log_prefix}) INFO: Full backup condition true, so let's do a full backup"
     else
         #find directory of previous backup
