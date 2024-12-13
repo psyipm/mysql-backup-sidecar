@@ -74,7 +74,7 @@ if [ ! -z "${after_backup_script}" ]; then
     else
         status="failed"
     fi
-    ${after_backup_script} ${status} "${output}" "${current_dir}" 
+    ${after_backup_script} ${status} "${output}" "${current_dir}"
 fi
 rm ${tmp_output}
 

@@ -1,25 +1,27 @@
-FROM debian:10-slim
+FROM ubuntu:noble
 
 LABEL maintainer="Wolfgang Gassler"
 LABEL description="XtraBackup based MySQL / MariaDB backup docker image to create incremental backups periodically"
 
-# installing xtrabackup according to https://www.percona.com/doc/percona-xtrabackup/8.0/installation/apt_repo.html
+# installing xtrabackup according to https://docs.percona.com/percona-xtrabackup/8.0/apt-repo.html
 
-RUN . /etc/os-release \
-    && apt-get update \
-    && apt-get -y install wget lsb-release gnupg2 cron curl \
-    && rm -rf /etc/cron.* \
-    && . /etc/os-release \
-    && wget https://repo.percona.com/apt/percona-release_latest.${VERSION_CODENAME}_all.deb \
-    && dpkg -i percona-release_latest.${VERSION_CODENAME}_all.deb \
-    && rm -f percona-release_latest.${VERSION_CODENAME}_all.deb \
-    && percona-release enable-only tools release \
-    && apt-get update \
-    && apt-get -y install percona-xtrabackup-80=8.0.34-29-1.buster
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt update \
+    && apt install -y curl cron tini \
+    && curl -O https://repo.percona.com/apt/percona-release_latest.generic_all.deb \
+    && apt install -y gnupg2 lsb-release ./percona-release_latest.generic_all.deb \
+    && apt update \
+    && percona-release setup pxb-80 \
+    && apt install -y percona-xtrabackup-80 \
+    && apt clean \
+    && rm -rf ./percona-release_latest.generic_all.deb /var/lib/apt/lists/* /tmp/* /var/tmp/* /etc/cron.*/*
 
 COPY scripts /scripts
 
 VOLUME /backup /var/lib/mysql
 WORKDIR /backup
+
+ENTRYPOINT ["tini", "--"]
 
 CMD ["/scripts/start.sh"]
